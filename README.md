@@ -36,36 +36,36 @@ docker compose up -d
 
 ### PostgreSQL
 
-- ✔️ Service actif avec volume `pgdata`
-- ✔️ Pas de port exposé (`ports:` absent)
-- ✔️ Réseau `backend` de type `internal`
+- Service actif avec volume `pgdata`
+- Pas de port exposé (`ports:` absent)
+- Réseau `backend` de type `internal`
 
 ### Zabbix Web
 
-- ✔️ Accessible en HTTP (port 8080)
-- ✔️ Healthcheck actif
-- ✔️ Fuseau horaire Europe/Paris configuré
+- Accessible en HTTP (port 8080)
+- Healthcheck actif
+- Fuseau horaire Europe/Paris configuré
 
 ### Zabbix Server
 
-- ✔️ Communique avec la base PostgreSQL
-- ✔️ Utilise les variables définies dans `.env`
+- Communique avec la base PostgreSQL
+- Utilise les variables définies dans `.env`
 
 ### Zabbix Agent
 
-- ✔️ Agent actif avec nom déclaré via `ZBX_HOSTNAME=zabbix-server`
-- ✔️ Peut être supervisé dans l'interface Zabbix
+- Agent actif avec nom déclaré via `ZBX_HOSTNAME=zabbix-server`
+- Peut être supervisé dans l'interface Zabbix
 
 ### pgAdmin
 
-- ✔️ Accessible en HTTP (port 5050)
-- ✔️ Volume `pgadmin_data` configuré
+- Accessible en HTTP (port 5050)
+- Volume `pgadmin_data` configuré
 
 ### Ressources (Cgroups)
 
-- ✔️ Limites mémoire (`mem_limit`) définies
-- ✔️ Pas de swap (`memswap_limit: -1`)
-- ✔️ Contrôlables avec `docker stats` ou `docker inspect`
+- Limites mémoire (`mem_limit`) définies
+- Pas de swap (`memswap_limit: -1`)
+- Contrôlables avec `docker stats` ou `docker inspect`
 
 ---
 
