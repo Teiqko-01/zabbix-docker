@@ -1,0 +1,81 @@
+networks:
+  backend:
+    internal: true              # Réseau privé (non exposé), pour la sécurité des données
+  frontend: null                # Réseau accessible de l'extérieur, utilisé par Zabbix Web et pgAdmin
+
+volumes:
+  pgdata:                       # Volume persistant pour PostgreSQL
+  pgadmin_data:                 # Volume persistant pour pgAdmin
+
+services:
+
+  postgres:                     # Base de données pour Zabbix
+    image: postgres:16
+    container_name: zabbix-db
+    restart: always
+    env_file: ['.env']          # Chargement des variables sensibles
+    volumes: ['pgdata:/var/lib/postgresql/data']
+    networks: ['backend']
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    mem_limit: 1024M
+    memswap_limit: -1           # Empêche l'utilisation du swap
+
+  zabbix-server:                # Serveur Zabbix
+    image: zabbix/zabbix-server-pgsql:alpine-latest
+    container_name: zabbix-server
+    restart: always
+    env_file: ['.env']
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: ['backend']
+    mem_limit: 1024M
+    memswap_limit: -1
+
+  zabbix-web:                   # Interface web Zabbix
+    image: zabbix/zabbix-web-apache-pgsql:alpine-latest
+    container_name: zabbix-web
+    restart: always
+    env_file: ['.env']
+    depends_on:
+      zabbix-server:
+        condition: service_started
+    ports: ['8080:8080']        # Exposition sur le port 8080
+    networks: ['frontend', 'backend']
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -f http://localhost:8080 || exit 1']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    mem_limit: 1024M
+    memswap_limit: -1
+
+  pgadmin:                      # Interface d'administration PostgreSQL
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    env_file: ['.env']
+    ports: ['5050:80']          # Accessible depuis http://localhost:5050
+    volumes: ['pgadmin_data:/var/lib/pgadmin']
+    networks: ['frontend', 'backend']
+    mem_limit: 512M
+    memswap_limit: -1
+
+  zabbix-agent:                 # Agent Zabbix (permet de superviser l’hôte Docker lui-même)
+    image: zabbix/zabbix-agent:alpine-latest
+    container_name: zabbix-agent
+    restart: always
+    env_file: ['.env']
+    environment:
+      - ZBX_HOSTNAME=zabbix-server 
+    depends_on:
+      zabbix-server:
+        condition: service_started
+    networks:
+      - backend
+    mem_limit: 512M
+    memswap_limit: -1
