@@ -32,7 +32,7 @@ docker compose up -d
 
 ---
 
-## Vérifications pour l’évaluation
+## Vérifications
 
 ### PostgreSQL
 
