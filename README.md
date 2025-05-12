@@ -1,4 +1,4 @@
-# Projet Docker Zabbix - Évaluation ASRBD
+# Projet Docker Zabbix
 
 Belloir Félix - Carre Adrien - Bertrand Tharreau Corentin
 
