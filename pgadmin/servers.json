@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Zabbix DB",                 // Nom affiché dans pgAdmin
+      "Group": "Servers",                  // Groupe dans lequel classer ce serveur
+      "Host": "zabbix-db",                 // Nom du service PostgreSQL
+      "Port": 5432,                        // Port utilisé par PostgreSQL
+      "MaintenanceDB": "zabbix",           // Nom de la base à laquelle se connecter
+      "Username": "zabbix_user",           // Identifiant pour la connexion
+      "SSLMode": "prefer"                  // Mode SSL
+    }
+  }
+}
