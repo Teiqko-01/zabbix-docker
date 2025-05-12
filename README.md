@@ -1,5 +1,7 @@
 # Projet Docker Zabbix - Évaluation ASRBD
 
+Belloir Félix - Carre Adrien - Bertrand Tharreau Corentin
+
 ## Contenu de l'archive
 
 - `docker-compose.yml` : configuration complète Docker Compose (réseaux internes, healthchecks, Cgroups, agent Zabbix, etc.)
